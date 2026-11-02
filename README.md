@@ -24,6 +24,7 @@
 | GitHub URL | https://github.com/programstart/01--agent |
 | 最终 commit SHA | 最终提交后在考试提交表单中填写 |
 | 仓库可见性 | 按考试要求向指定评审账号开放 |
+| 实际用时 | 约 4 小时 30 分钟 |
 
 ## 环境
 
