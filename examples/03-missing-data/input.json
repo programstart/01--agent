@@ -1,0 +1,8 @@
+{
+  "scenario": "missing_material_data",
+  "asset_id": "M03",
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "model": "mock",
+  "simulate_save_failure": false
+}

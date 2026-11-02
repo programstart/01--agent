@@ -1,0 +1,23 @@
+{
+  "run_id": "RUN-2F63453233AF",
+  "asset_id": "M03",
+  "audit_status": null,
+  "risk_reasons": [
+    "素材缺少字段: title"
+  ],
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "proposed_at": null,
+  "occupancy_minutes": 30,
+  "requires_confirmation": false,
+  "confirmation_reasons": [],
+  "draft_id": null,
+  "draft_status": null,
+  "draft_save_status": "NOT_ATTEMPTED",
+  "publication_status": "NOT_PUBLISHED",
+  "run_status": "INCOMPLETE",
+  "unfinished_reason": "素材资料不足: title",
+  "trace_path": "examples\\03-missing-data\\traces\\RUN-2F63453233AF.json",
+  "tool_steps": 1,
+  "model_steps": 2,
+  "model_mode": "mock"
+}

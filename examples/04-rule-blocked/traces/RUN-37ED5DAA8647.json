@@ -1,0 +1,137 @@
+{
+  "run_id": "RUN-37ED5DAA8647",
+  "events": [
+    {
+      "type": "request_normalized",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "asset_id": "M04",
+      "requested_at": "2026-11-01T20:00:00+08:00",
+      "requested_at_utc": "2026-11-01T12:00:00Z",
+      "timezone": "Asia/Shanghai",
+      "search_until": "2026-11-01T23:59:00+08:00",
+      "occupancy_minutes": 30,
+      "slot_step_minutes": 30,
+      "model_mode": "mock"
+    },
+    {
+      "type": "prepare_run",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "existing_draft_id": null,
+      "idempotency_key_hash": "sha256:2b74b9a6c99f87c4"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "step": 1,
+      "action": "read_material",
+      "arguments": {
+        "asset_id": "M04"
+      },
+      "decision_basis": "尚未读取素材，先获取审核所需数据。",
+      "allowed_actions": [
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "step": 1,
+      "tool": "read_material",
+      "arguments": {
+        "asset_id": "M04"
+      },
+      "result_status": "SUCCESS",
+      "summary": {
+        "status": "SUCCESS",
+        "asset_id": "M04",
+        "missing_fields": [],
+        "content_truncated": false,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 1,
+        "tool_calls": 1
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "step": 2,
+      "action": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M04",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取成功，继续检查当前审核规则。",
+      "allowed_actions": [
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "step": 2,
+      "tool": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M04",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "BLOCKED",
+      "summary": {
+        "status": "BLOCKED",
+        "checked_rules": 6,
+        "violations": [
+          {
+            "rule_id": "R004",
+            "rule_kind": "STRUCTURED",
+            "severity": "BLOCKING",
+            "reason": "素材包含禁止使用的产品功效承诺",
+            "evidence_spans": [
+              "本产品保证收益，适合所有用户。"
+            ]
+          }
+        ],
+        "uncertain_rules": [],
+        "missing_fields": [],
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "step": 3,
+      "action": "finish",
+      "arguments": {},
+      "decision_basis": "审核结果不允许继续排期。",
+      "allowed_actions": [
+        "finish"
+      ]
+    },
+    {
+      "type": "finalize",
+      "timestamp": "2026-11-01T14:31:56Z",
+      "run_status": "INCOMPLETE",
+      "draft_id": null,
+      "draft_save_status": "NOT_ATTEMPTED",
+      "publication_status": "NOT_PUBLISHED",
+      "unfinished_reason": "素材未通过阻断性审核规则"
+    }
+  ]
+}

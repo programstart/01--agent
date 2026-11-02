@@ -1,0 +1,23 @@
+{
+  "run_id": "RUN-FAD2735EDC7C",
+  "asset_id": "M07",
+  "audit_status": "BLOCKED",
+  "risk_reasons": [
+    "素材正文直接表达本金不会减少，构成对保本收益的整体暗示。"
+  ],
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "proposed_at": null,
+  "occupancy_minutes": 30,
+  "requires_confirmation": false,
+  "confirmation_reasons": [],
+  "draft_id": null,
+  "draft_status": null,
+  "draft_save_status": "NOT_ATTEMPTED",
+  "publication_status": "NOT_PUBLISHED",
+  "run_status": "INCOMPLETE",
+  "unfinished_reason": "素材未通过阻断性审核规则",
+  "trace_path": "examples\\08-live-semantic-block\\traces\\RUN-FAD2735EDC7C.json",
+  "tool_steps": 2,
+  "model_steps": 3,
+  "model_mode": "live"
+}

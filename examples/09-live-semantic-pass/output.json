@@ -1,0 +1,21 @@
+{
+  "run_id": "RUN-FB0FBB58614D",
+  "asset_id": "M08",
+  "audit_status": "PASS",
+  "risk_reasons": [],
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "proposed_at": "2026-11-01T20:00:00+08:00",
+  "occupancy_minutes": 30,
+  "requires_confirmation": false,
+  "confirmation_reasons": [],
+  "draft_id": "D-A98303ABA7ED",
+  "draft_status": "READY",
+  "draft_save_status": "SAVED",
+  "publication_status": "NOT_PUBLISHED",
+  "run_status": "COMPLETED",
+  "unfinished_reason": null,
+  "trace_path": "examples\\09-live-semantic-pass\\traces\\RUN-FB0FBB58614D.json",
+  "tool_steps": 4,
+  "model_steps": 5,
+  "model_mode": "live"
+}

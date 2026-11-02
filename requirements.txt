@@ -1,0 +1,6 @@
+langgraph==1.2.19
+langchain-core==1.7.3
+langchain-openai==1.7.3
+pydantic==2.14.2
+pytest==9.2.0
+tzdata==2026.6

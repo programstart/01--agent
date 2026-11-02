@@ -1,0 +1,137 @@
+{
+  "run_id": "RUN-FAD2735EDC7C",
+  "events": [
+    {
+      "type": "request_normalized",
+      "timestamp": "2026-11-01T14:34:35Z",
+      "asset_id": "M07",
+      "requested_at": "2026-11-01T20:00:00+08:00",
+      "requested_at_utc": "2026-11-01T12:00:00Z",
+      "timezone": "Asia/Shanghai",
+      "search_until": "2026-11-01T23:59:00+08:00",
+      "occupancy_minutes": 30,
+      "slot_step_minutes": 30,
+      "model_mode": "live"
+    },
+    {
+      "type": "prepare_run",
+      "timestamp": "2026-11-01T14:34:35Z",
+      "existing_draft_id": null,
+      "idempotency_key_hash": "sha256:756545aa28889d9b"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:34:44Z",
+      "step": 1,
+      "action": "read_material",
+      "arguments": {
+        "asset_id": "M07"
+      },
+      "decision_basis": "当前 allowed_actions 仅包含 read_material，且正常请求必须先完成素材读取。预算仍有剩余，未出现草稿已保存、不可继续业务状态或工具错误，因此选择读取素材 M07，以便后续依据 observation 进行规则检查与时段查询。",
+      "allowed_actions": [
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:34:44Z",
+      "step": 1,
+      "tool": "read_material",
+      "arguments": {
+        "asset_id": "M07"
+      },
+      "result_status": "SUCCESS",
+      "summary": {
+        "status": "SUCCESS",
+        "asset_id": "M07",
+        "missing_fields": [],
+        "content_truncated": false,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 1,
+        "tool_calls": 1
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:34:44Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:16Z",
+      "step": 2,
+      "action": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M07",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取已成功，但 source_status 仍为 pending_review，不能宣称审核通过。按流程必须先完成规则检查，再进入时段查询与草稿保存；当前 allowed_actions 仅开放 read_material/check_audit_rules，read_material 已完成，因此选择 check_audit_rules。参数沿用请求信息，不执行真实发布。",
+      "allowed_actions": [
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:23Z",
+      "step": 2,
+      "tool": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M07",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "BLOCKED",
+      "summary": {
+        "status": "BLOCKED",
+        "checked_rules": 6,
+        "violations": [
+          {
+            "rule_id": "R006",
+            "rule_kind": "SEMANTIC",
+            "severity": "BLOCKING",
+            "reason": "素材正文直接表达本金不会减少，构成对保本收益的整体暗示。",
+            "evidence_spans": [
+              "你的本金都不会减少"
+            ]
+          }
+        ],
+        "uncertain_rules": [],
+        "missing_fields": [],
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:23Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:32Z",
+      "step": 3,
+      "action": "finish",
+      "arguments": {},
+      "decision_basis": "素材读取已完成，审核规则检查返回 BLOCKED。R006 为阻断级违规，证据为“你的本金都不会减少”，判定存在保本收益暗示；因此当前素材不具备继续保存无冲突排期草稿的业务条件。虽然预算仍有剩余，但本次可用动作仅 finish，且审核阻断属于不可继续状态。未执行真实发布，也未确认排期。",
+      "allowed_actions": [
+        "finish"
+      ]
+    },
+    {
+      "type": "finalize",
+      "timestamp": "2026-11-01T14:35:32Z",
+      "run_status": "INCOMPLETE",
+      "draft_id": null,
+      "draft_save_status": "NOT_ATTEMPTED",
+      "publication_status": "NOT_PUBLISHED",
+      "unfinished_reason": "素材未通过阻断性审核规则"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "run_id": "RUN-726A3E0499C9",
+  "asset_id": "M01",
+  "audit_status": "PASS",
+  "risk_reasons": [],
+  "requested_at": "2026-11-01T18:00:00+08:00",
+  "proposed_at": "2026-11-01T18:30:00+08:00",
+  "occupancy_minutes": 30,
+  "requires_confirmation": true,
+  "confirmation_reasons": [
+    "ALTERNATIVE_TIME"
+  ],
+  "draft_id": "D-4624CFE82F45",
+  "draft_status": "PENDING_CONFIRMATION",
+  "draft_save_status": "SAVED",
+  "publication_status": "NOT_PUBLISHED",
+  "run_status": "COMPLETED",
+  "unfinished_reason": null,
+  "trace_path": "examples\\02-conflict\\traces\\RUN-726A3E0499C9.json",
+  "tool_steps": 4,
+  "model_steps": 5,
+  "model_mode": "mock"
+}

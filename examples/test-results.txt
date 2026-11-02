@@ -1,0 +1,24 @@
+Command:
+.\.venv\Scripts\python.exe -m pytest
+
+Result:
+.........................                                                [100%]
+30 passed in 2.92s
+
+Command:
+.\.venv\Scripts\python.exe -m pip check
+
+Result:
+No broken requirements found.
+
+Command:
+.\.venv\Scripts\python.exe -m compileall -q src run.py scripts\generate_examples.py
+
+Result:
+Exit code 0
+
+Manual live-model checks:
+- examples/06-live-normal: COMPLETED, READY draft SAVED, NOT_PUBLISHED
+- examples/07-live-conflict: COMPLETED, original 18:00 preserved, 30-minute interval 18:00-18:30 conflicted, replacement interval 18:30-19:00 SAVED as PENDING_CONFIRMATION, NOT_PUBLISHED
+- examples/08-live-semantic-block: BLOCKED by semantic rule R006, no draft
+- examples/09-live-semantic-pass: PASS including semantic rule R006, READY draft SAVED

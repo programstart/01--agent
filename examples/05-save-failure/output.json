@@ -1,0 +1,21 @@
+{
+  "run_id": "RUN-91B9C97D41FC",
+  "asset_id": "M01",
+  "audit_status": "PASS",
+  "risk_reasons": [],
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "proposed_at": "2026-11-01T20:00:00+08:00",
+  "occupancy_minutes": 30,
+  "requires_confirmation": false,
+  "confirmation_reasons": [],
+  "draft_id": null,
+  "draft_status": null,
+  "draft_save_status": "STORAGE_ERROR",
+  "publication_status": "NOT_PUBLISHED",
+  "run_status": "INCOMPLETE",
+  "unfinished_reason": "草稿保存失败",
+  "trace_path": "examples\\05-save-failure\\traces\\RUN-91B9C97D41FC.json",
+  "tool_steps": 4,
+  "model_steps": 5,
+  "model_mode": "mock"
+}

@@ -1,0 +1,84 @@
+{
+  "run_id": "RUN-2F63453233AF",
+  "events": [
+    {
+      "type": "request_normalized",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "asset_id": "M03",
+      "requested_at": "2026-11-01T20:00:00+08:00",
+      "requested_at_utc": "2026-11-01T12:00:00Z",
+      "timezone": "Asia/Shanghai",
+      "search_until": "2026-11-01T23:59:00+08:00",
+      "occupancy_minutes": 30,
+      "slot_step_minutes": 30,
+      "model_mode": "mock"
+    },
+    {
+      "type": "prepare_run",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "existing_draft_id": null,
+      "idempotency_key_hash": "sha256:0f7b19696d310b2a"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 1,
+      "action": "read_material",
+      "arguments": {
+        "asset_id": "M03"
+      },
+      "decision_basis": "尚未读取素材，先获取审核所需数据。",
+      "allowed_actions": [
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 1,
+      "tool": "read_material",
+      "arguments": {
+        "asset_id": "M03"
+      },
+      "result_status": "INCOMPLETE",
+      "summary": {
+        "status": "INCOMPLETE",
+        "asset_id": "M03",
+        "missing_fields": [
+          "title"
+        ],
+        "content_truncated": false,
+        "error_code": "MATERIAL_FIELDS_MISSING"
+      },
+      "model_budget": {
+        "steps": 1,
+        "tool_calls": 1
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 2,
+      "action": "finish",
+      "arguments": {},
+      "decision_basis": "素材无法继续审核，停止排期。",
+      "allowed_actions": [
+        "finish"
+      ]
+    },
+    {
+      "type": "finalize",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "run_status": "INCOMPLETE",
+      "draft_id": null,
+      "draft_save_status": "NOT_ATTEMPTED",
+      "publication_status": "NOT_PUBLISHED",
+      "unfinished_reason": "素材资料不足: title"
+    }
+  ]
+}

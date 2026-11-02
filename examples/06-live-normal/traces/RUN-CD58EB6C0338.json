@@ -1,0 +1,221 @@
+{
+  "run_id": "RUN-CD58EB6C0338",
+  "events": [
+    {
+      "type": "request_normalized",
+      "timestamp": "2026-11-01T14:34:33Z",
+      "asset_id": "M01",
+      "requested_at": "2026-11-01T20:00:00+08:00",
+      "requested_at_utc": "2026-11-01T12:00:00Z",
+      "timezone": "Asia/Shanghai",
+      "search_until": "2026-11-01T23:59:00+08:00",
+      "occupancy_minutes": 30,
+      "slot_step_minutes": 30,
+      "model_mode": "live"
+    },
+    {
+      "type": "prepare_run",
+      "timestamp": "2026-11-01T14:34:33Z",
+      "existing_draft_id": null,
+      "idempotency_key_hash": "sha256:e5fdfbc856a77b20"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:34:44Z",
+      "step": 1,
+      "action": "read_material",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "decision_basis": "当前 allowed_actions 仅开放 read_material，且正常流程必须先完成素材读取。读取 M01 素材是后续规则检查和时段查询的前置条件；本次不执行真实发布。",
+      "allowed_actions": [
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:34:44Z",
+      "step": 1,
+      "tool": "read_material",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "result_status": "SUCCESS",
+      "summary": {
+        "status": "SUCCESS",
+        "asset_id": "M01",
+        "missing_fields": [],
+        "content_truncated": false,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 1,
+        "tool_calls": 1
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:34:44Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:34:54Z",
+      "step": 2,
+      "action": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取已成功，字段完整，来源状态为待审核。当前流程需先完成规则检查，再基于结果查询时段并保存草稿。本轮 allowed_actions 仅允许 check_audit_rules/read_material，因此选择检查审核规则，不宣称审核通过或发布。",
+      "allowed_actions": [
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:08Z",
+      "step": 2,
+      "tool": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "checked_rules": 6,
+        "violations": [],
+        "uncertain_rules": [],
+        "missing_fields": [],
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:08Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:29Z",
+      "step": 3,
+      "action": "query_schedule_slots",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取与规则检查已有 observation：M01 字段无缺失，来源状态 pending_review，规则检查状态 PASS 且阻断违规为 0。按流程仍需查询可用时段，确认是否存在无冲突连续 30 分钟时段。当前 allowed_actions 不含保存草稿，因此先调用 query_schedule_slots；不执行真实发布，也不宣称排期确认。",
+      "allowed_actions": [
+        "query_schedule_slots",
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:29Z",
+      "step": 3,
+      "tool": "query_schedule_slots",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "AVAILABLE",
+      "summary": {
+        "status": "AVAILABLE",
+        "conflict_ids": [],
+        "alternative_count": 0,
+        "alternative_starts": [],
+        "occupancy_minutes": 30,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 3,
+        "tool_calls": 3
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:29Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:43Z",
+      "step": 4,
+      "action": "save_schedule_draft",
+      "arguments": {
+        "asset_id": "M01",
+        "proposed_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取已完成，字段无缺失；规则检查未出现阻断违规，且存在可用时段，requested_at 20:00 无冲突。按连续 30 分钟占用策略，可将该时段作为无冲突草稿保存。仅执行排期草稿保存，不宣称审核结论、排期确认或真实发布。",
+      "allowed_actions": [
+        "save_schedule_draft",
+        "query_schedule_slots",
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:43Z",
+      "step": 4,
+      "tool": "save_schedule_draft",
+      "arguments": {
+        "asset_id": "M01",
+        "proposed_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "SAVED",
+      "summary": {
+        "status": "SAVED",
+        "draft_id": "D-C7741A030F26",
+        "draft_status": "READY",
+        "duration_minutes": 30,
+        "requires_confirmation": false,
+        "publication_status": "NOT_PUBLISHED",
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 4,
+        "tool_calls": 4
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:43Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:50Z",
+      "step": 5,
+      "action": "finish",
+      "arguments": {},
+      "decision_basis": "素材读取成功且无缺失字段；审核结果为 PASS，无阻断违规或不确定项；时段查询显示可用且无冲突；排期草稿已保存，状态为 READY，publication_status 为 NOT_PUBLISHED，未执行真实发布。当前允许动作仅 finish，任务目标已完成。",
+      "allowed_actions": [
+        "finish"
+      ]
+    },
+    {
+      "type": "finalize",
+      "timestamp": "2026-11-01T14:35:50Z",
+      "run_status": "COMPLETED",
+      "draft_id": "D-C7741A030F26",
+      "draft_save_status": "SAVED",
+      "publication_status": "NOT_PUBLISHED",
+      "unfinished_reason": null
+    }
+  ]
+}

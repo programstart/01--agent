@@ -1,0 +1,221 @@
+{
+  "run_id": "RUN-FB0FBB58614D",
+  "events": [
+    {
+      "type": "request_normalized",
+      "timestamp": "2026-11-01T14:34:37Z",
+      "asset_id": "M08",
+      "requested_at": "2026-11-01T20:00:00+08:00",
+      "requested_at_utc": "2026-11-01T12:00:00Z",
+      "timezone": "Asia/Shanghai",
+      "search_until": "2026-11-01T23:59:00+08:00",
+      "occupancy_minutes": 30,
+      "slot_step_minutes": 30,
+      "model_mode": "live"
+    },
+    {
+      "type": "prepare_run",
+      "timestamp": "2026-11-01T14:34:37Z",
+      "existing_draft_id": null,
+      "idempotency_key_hash": "sha256:c6b1ca691c8fb9ac"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:05Z",
+      "step": 1,
+      "action": "read_material",
+      "arguments": {
+        "asset_id": "M08"
+      },
+      "decision_basis": "当前 allowed_actions 仅开放 read_material，正常请求必须先读取素材；预算仍有剩余，未出现草稿已保存、业务不可继续或工具错误，不能 finish。先读取 M08，再依据 observation 决定规则检查与时段查询。",
+      "allowed_actions": [
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:05Z",
+      "step": 1,
+      "tool": "read_material",
+      "arguments": {
+        "asset_id": "M08"
+      },
+      "result_status": "SUCCESS",
+      "summary": {
+        "status": "SUCCESS",
+        "asset_id": "M08",
+        "missing_fields": [],
+        "content_truncated": false,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 1,
+        "tool_calls": 1
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:05Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:27Z",
+      "step": 2,
+      "action": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M08",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取 observation 已成功且字段齐全，但 source_status 仍为 pending_review，不能据此判断审核通过。当前允许动作包含 check_audit_rules，预算充足，且正常流程需完成规则检查后才能继续时段查询与草稿保存。因此选择调用 check_audit_rules，使用给定 asset_id、requested_at、timezone，不执行发布。",
+      "allowed_actions": [
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:36Z",
+      "step": 2,
+      "tool": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M08",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "checked_rules": 6,
+        "violations": [],
+        "uncertain_rules": [],
+        "missing_fields": [],
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:36Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:35:58Z",
+      "step": 3,
+      "action": "query_schedule_slots",
+      "arguments": {
+        "asset_id": "M08",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "已收到素材读取与规则检查 observation，且工具预算剩余；按正常流程必须继续查询时段，以基于 half_open_interval_overlap 判断候选排期是否无冲突。仅查询时段，不执行发布，不保存草稿，不宣称审核通过或排期确认。",
+      "allowed_actions": [
+        "query_schedule_slots",
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:35:58Z",
+      "step": 3,
+      "tool": "query_schedule_slots",
+      "arguments": {
+        "asset_id": "M08",
+        "requested_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "AVAILABLE",
+      "summary": {
+        "status": "AVAILABLE",
+        "conflict_ids": [],
+        "alternative_count": 0,
+        "alternative_starts": [],
+        "occupancy_minutes": 30,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 3,
+        "tool_calls": 3
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:35:58Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:36:36Z",
+      "step": 4,
+      "action": "save_schedule_draft",
+      "arguments": {
+        "asset_id": "M08",
+        "proposed_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取、规则检查、时段查询均已完成；audit_observation.status=PASS且blocking/warning violation为0，schedule_observation.status=AVAILABLE且conflicts为空。满足保存无冲突草稿条件，选择保存草稿，不执行真实发布。",
+      "allowed_actions": [
+        "save_schedule_draft",
+        "query_schedule_slots",
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:36:36Z",
+      "step": 4,
+      "tool": "save_schedule_draft",
+      "arguments": {
+        "asset_id": "M08",
+        "proposed_at": "2026-11-01T20:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "SAVED",
+      "summary": {
+        "status": "SAVED",
+        "draft_id": "D-A98303ABA7ED",
+        "draft_status": "READY",
+        "duration_minutes": 30,
+        "requires_confirmation": false,
+        "publication_status": "NOT_PUBLISHED",
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 4,
+        "tool_calls": 4
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:36:36Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:36:42Z",
+      "step": 5,
+      "action": "finish",
+      "arguments": {},
+      "decision_basis": "当前允许动作仅 finish，且工具 observation 已覆盖素材读取、规则检查、时段查询和草稿保存。audit_observation 显示 6 条规则均 PASSED，blocking/warning violation 为 0；schedule_observation 显示无冲突；draft_observation 显示草稿已保存，publication_status 为 NOT_PUBLISHED，符合不执行真实发布目标。因此选择 finish。",
+      "allowed_actions": [
+        "finish"
+      ]
+    },
+    {
+      "type": "finalize",
+      "timestamp": "2026-11-01T14:36:42Z",
+      "run_status": "COMPLETED",
+      "draft_id": "D-A98303ABA7ED",
+      "draft_save_status": "SAVED",
+      "publication_status": "NOT_PUBLISHED",
+      "unfinished_reason": null
+    }
+  ]
+}

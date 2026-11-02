@@ -1,0 +1,8 @@
+{
+  "scenario": "blocking_rule",
+  "asset_id": "M04",
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "model": "mock",
+  "simulate_save_failure": false
+}

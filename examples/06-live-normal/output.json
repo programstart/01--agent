@@ -1,0 +1,21 @@
+{
+  "run_id": "RUN-CD58EB6C0338",
+  "asset_id": "M01",
+  "audit_status": "PASS",
+  "risk_reasons": [],
+  "requested_at": "2026-11-01T20:00:00+08:00",
+  "proposed_at": "2026-11-01T20:00:00+08:00",
+  "occupancy_minutes": 30,
+  "requires_confirmation": false,
+  "confirmation_reasons": [],
+  "draft_id": "D-C7741A030F26",
+  "draft_status": "READY",
+  "draft_save_status": "SAVED",
+  "publication_status": "NOT_PUBLISHED",
+  "run_status": "COMPLETED",
+  "unfinished_reason": null,
+  "trace_path": "examples\\06-live-normal\\traces\\RUN-CD58EB6C0338.json",
+  "tool_steps": 4,
+  "model_steps": 5,
+  "model_mode": "live"
+}

@@ -1,0 +1,8 @@
+{
+  "scenario": "live_model_conflict_path",
+  "asset_id": "M01",
+  "requested_at": "2026-11-01T18:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "model": "live",
+  "simulate_save_failure": false
+}

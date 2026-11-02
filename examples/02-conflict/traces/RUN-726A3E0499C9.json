@@ -1,0 +1,229 @@
+{
+  "run_id": "RUN-726A3E0499C9",
+  "events": [
+    {
+      "type": "request_normalized",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "asset_id": "M01",
+      "requested_at": "2026-11-01T18:00:00+08:00",
+      "requested_at_utc": "2026-11-01T10:00:00Z",
+      "timezone": "Asia/Shanghai",
+      "search_until": "2026-11-01T23:59:00+08:00",
+      "occupancy_minutes": 30,
+      "slot_step_minutes": 30,
+      "model_mode": "mock"
+    },
+    {
+      "type": "prepare_run",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "existing_draft_id": null,
+      "idempotency_key_hash": "sha256:b6e7ec08a31ef7bb"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 1,
+      "action": "read_material",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "decision_basis": "尚未读取素材，先获取审核所需数据。",
+      "allowed_actions": [
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 1,
+      "tool": "read_material",
+      "arguments": {
+        "asset_id": "M01"
+      },
+      "result_status": "SUCCESS",
+      "summary": {
+        "status": "SUCCESS",
+        "asset_id": "M01",
+        "missing_fields": [],
+        "content_truncated": false,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 1,
+        "tool_calls": 1
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 2,
+      "action": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T18:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "素材读取成功，继续检查当前审核规则。",
+      "allowed_actions": [
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 2,
+      "tool": "check_audit_rules",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T18:00:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "PASS",
+      "summary": {
+        "status": "PASS",
+        "checked_rules": 6,
+        "violations": [],
+        "uncertain_rules": [],
+        "missing_fields": [],
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 2,
+        "tool_calls": 2
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 3,
+      "action": "query_schedule_slots",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T18:00:00+08:00",
+        "timezone": "Asia/Shanghai",
+        "search_until": "2026-11-01T23:59:00+08:00"
+      },
+      "decision_basis": "审核允许继续，查询目标时段是否冲突。",
+      "allowed_actions": [
+        "query_schedule_slots",
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 3,
+      "tool": "query_schedule_slots",
+      "arguments": {
+        "asset_id": "M01",
+        "requested_at": "2026-11-01T18:00:00+08:00",
+        "timezone": "Asia/Shanghai",
+        "search_until": "2026-11-01T23:59:00+08:00"
+      },
+      "result_status": "CONFLICT_WITH_ALTERNATIVE",
+      "summary": {
+        "status": "CONFLICT_WITH_ALTERNATIVE",
+        "conflict_ids": [
+          "S001"
+        ],
+        "alternative_count": 3,
+        "alternative_starts": [
+          "2026-11-01T18:30:00+08:00",
+          "2026-11-01T19:00:00+08:00",
+          "2026-11-01T19:30:00+08:00"
+        ],
+        "occupancy_minutes": 30,
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 3,
+        "tool_calls": 3
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 4,
+      "action": "save_schedule_draft",
+      "arguments": {
+        "asset_id": "M01",
+        "proposed_at": "2026-11-01T18:30:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "decision_basis": "原时段冲突，保存第一个建议时段并标记待确认。",
+      "allowed_actions": [
+        "save_schedule_draft",
+        "query_schedule_slots",
+        "check_audit_rules",
+        "read_material"
+      ]
+    },
+    {
+      "type": "tool_execution",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 4,
+      "tool": "save_schedule_draft",
+      "arguments": {
+        "asset_id": "M01",
+        "proposed_at": "2026-11-01T18:30:00+08:00",
+        "timezone": "Asia/Shanghai"
+      },
+      "result_status": "SAVED",
+      "summary": {
+        "status": "SAVED",
+        "draft_id": "D-4624CFE82F45",
+        "draft_status": "PENDING_CONFIRMATION",
+        "duration_minutes": 30,
+        "requires_confirmation": true,
+        "publication_status": "NOT_PUBLISHED",
+        "error_code": null
+      },
+      "model_budget": {
+        "steps": 4,
+        "tool_calls": 4
+      }
+    },
+    {
+      "type": "guard_route",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "route": "model_decide"
+    },
+    {
+      "type": "model_decision",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "step": 5,
+      "action": "finish",
+      "arguments": {},
+      "decision_basis": "草稿保存流程已完成。",
+      "allowed_actions": [
+        "finish"
+      ]
+    },
+    {
+      "type": "finalize",
+      "timestamp": "2026-11-01T14:31:55Z",
+      "run_status": "COMPLETED",
+      "draft_id": "D-4624CFE82F45",
+      "draft_save_status": "SAVED",
+      "publication_status": "NOT_PUBLISHED",
+      "unfinished_reason": null
+    }
+  ]
+}

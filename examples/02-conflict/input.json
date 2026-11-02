@@ -1,0 +1,8 @@
+{
+  "scenario": "time_conflict_with_alternative",
+  "asset_id": "M01",
+  "requested_at": "2026-11-01T18:00:00+08:00",
+  "timezone": "Asia/Shanghai",
+  "model": "mock",
+  "simulate_save_failure": false
+}
